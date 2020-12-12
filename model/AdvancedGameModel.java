@@ -138,18 +138,7 @@ public class AdvancedGameModel implements GameModel, Board {
                     }
                 }
             }
-                
-
-    //     for (Jewel jewel : jewels) if (jewel.equals(tile)) jewels.remove(jewel);
-    //     for (Turtle turtle: players) if (turtle.equals(tile)) players.remove(turtle);
-    //     for (Tile other : otherTiles) 
-    //         if (other.equals(tile)){
-    //             otherTiles.remove(other);
-    //             if (tile instanceof Portal)
-    //                 otherTiles.remove(((Portal)tile).getExitPortal());
-    //         } 
     }
-
 
     @Override
     public String toString(){

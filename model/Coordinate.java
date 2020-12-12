@@ -8,11 +8,6 @@ public class Coordinate {
         this.yPos = y;
     }
 
-    // public Coordinate (Coordinate c){
-    //     this.xPos = c.xPos;
-    //     this.yPos = c.yPos;
-    // }
-
     public int x () {return xPos;}
     public int y () {return yPos;}
 
