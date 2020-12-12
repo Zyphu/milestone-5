@@ -1,6 +1,5 @@
 package model;
 
-// TODO - run checks
 public abstract class Movable implements Tile {
     private Coordinate curr, next;
     private Board board;
@@ -48,7 +47,6 @@ public abstract class Movable implements Tile {
         return false;
     }
 
-    // TODO might need to use getClass instead check
     public boolean visit (Crate tile){
         if (tile == null) return true;
         return (this instanceof Pusher)? tile.forward(((Pusher) this).getDir()) : false;

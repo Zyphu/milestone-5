@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayDeque;
+import java.util.Iterator;
 
 public class AdvancedGameModel implements GameModel, Board {
 
@@ -9,7 +10,6 @@ public class AdvancedGameModel implements GameModel, Board {
     private ArrayDeque<Jewel> jewels;
     private ArrayDeque<Turtle> players;
     private ArrayDeque<Tile> otherTiles;
-
 
     // private char [][] map = {
     //     {'.','.','.','.','.','.','.','.',},
@@ -22,7 +22,6 @@ public class AdvancedGameModel implements GameModel, Board {
     //     {'.','.','.','.','.','.','.','.',},
     // };
 
-    
     public AdvancedGameModel(int numPlayers){
         jewels  = new ArrayDeque<>();
         players = new ArrayDeque<>();
@@ -44,9 +43,11 @@ public class AdvancedGameModel implements GameModel, Board {
             otherTiles.add( new StoneWall(new Coordinate(6,2)));
             otherTiles.add( new StoneWall(new Coordinate(0,3)));
             otherTiles.add( new Crate(this, new Coordinate(2, 5)));
-            otherTiles.add( new Crate(this, new Coordinate(2, 6)));
-            otherTiles.add( new Portal(new Coordinate(4, 2), new Coordinate(2, 6)));
+            otherTiles.add( new Crate(this, new Coordinate(3, 5)));
 
+            Portal portal = new Portal(new Coordinate(4, 2), new Coordinate(2, 6));
+            otherTiles.add(portal);
+            otherTiles.add(portal.getExitPortal());
         }        
     }
 
@@ -61,7 +62,7 @@ public class AdvancedGameModel implements GameModel, Board {
         AdvancedDeck deck = new AdvancedDeck();
         ArrayDeque<Move> moves = new ArrayDeque<>();
         for (int i = 0; i < program.length; i++){
-            if (program[i].equals(Card.FROG) && frog != null){
+            if (frog != null && program[i].equals(Card.FROG)){
                 for (int j = 0; j < frog.length; j++)
                     if (deck.use(frog[j])){
                         try {
@@ -110,14 +111,43 @@ public class AdvancedGameModel implements GameModel, Board {
     @Override
     public boolean inBounds(Coordinate coordinate) {
         if (coordinate == null) return false;
-        return coordinate.x() > 0 || coordinate.x() < dimensions || coordinate.y() > 0 || coordinate.y() < dimensions;
+        return coordinate.x() >= 0 && coordinate.x() < dimensions && coordinate.y() >=0 && coordinate.y() < dimensions;
     }
 
     @Override
     public void remove(Tile tile){
-        for (Jewel jewel : jewels) if (jewel.equals(tile)) jewels.remove(jewel);
-        for (Turtle turtle: players) if (turtle.equals(tile)) players.remove(turtle);
-        for (Tile other : otherTiles) if (other.equals(tile)) otherTiles.remove(other);
+        Iterator<Jewel> jewelItr = jewels.iterator();
+        while (jewelItr.hasNext())
+            if (jewelItr.next().equals(tile))
+                jewelItr.remove();
+
+        Iterator<Turtle> turtleItr = players.iterator();
+        while (turtleItr.hasNext())
+            if (turtleItr.next().equals(tile))
+                turtleItr.remove();
+
+        Iterator<Tile> otherItr = otherTiles.iterator();
+        while (otherItr.hasNext())
+            if (otherItr.next().equals(tile)){
+                otherItr.remove();
+                if (tile instanceof Portal){
+                    otherItr = otherTiles.iterator();
+                    while (otherItr.hasNext()){
+                        if (otherItr.next().equals(((Portal)tile).getExitPortal()))
+                            otherItr.remove();
+                    }
+                }
+            }
+                
+
+    //     for (Jewel jewel : jewels) if (jewel.equals(tile)) jewels.remove(jewel);
+    //     for (Turtle turtle: players) if (turtle.equals(tile)) players.remove(turtle);
+    //     for (Tile other : otherTiles) 
+    //         if (other.equals(tile)){
+    //             otherTiles.remove(other);
+    //             if (tile instanceof Portal)
+    //                 otherTiles.remove(((Portal)tile).getExitPortal());
+    //         } 
     }
 
 
