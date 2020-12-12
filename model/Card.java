@@ -1,10 +1,5 @@
 package model;
 
 public enum Card {
-    FORWARD,
-    LEFT,
-    RIGHT,
-    LASER,
-    FROG,
-    BUG;
+    FORWARD, LEFT, RIGHT, LASER, FROG, BUG;
 }
