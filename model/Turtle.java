@@ -1,81 +1,46 @@
 package model;
 
-// TODO - implements Movable
-public class Turtle extends ColouredTile implements Orientable {
+public class Turtle extends Movable implements Player, Orientable, Coloured {
+    
     private Direction direction;
-    private Board board;
+    private Colour colour;
     private Move[] moves = null;
 
-    public Turtle (Coordinate coordinate, Colour colour, Direction direction, Board board){
-        super(coordinate, colour);
-        this.direction = direction;
-        this.board = board;
+    public Turtle(Board board, Coordinate coordinate, Direction direction, Colour colour) {
+        super(board, coordinate);
     }
 
-    public Board getBoard (){
-        return board;
+    @Override
+    public boolean accept(Movable visitor) {
+        return (visitor == null)? true : visitor.visit(this);
     }
 
+    @Override
     public Direction getDir() {
         return direction;
     }
 
-    public void setDir (Direction direction){
+    @Override
+    public void setDir(Direction direction) {
         this.direction = direction;
     }
 
-    public void setTurn (Move[] moves){
+    @Override
+    public Colour getColour() {
+        return colour;
+    }
+
+    @Override
+    public void setTurn(Move[] moves) {
         this.moves = moves;
     }
 
-    public void executeTurn(){
-        if (moves != null)
-            for (Move move : moves) move.execute(this);
-    }
-
-    public void setCoordinate (Coordinate coordinate){
-        this.coordinate = coordinate;
-    }
-
-    // @Override
-    // public boolean visit(Portal tile) {
-    //     // TODO Auto-generated method stub
-    //     return false;
-    // }
-
-    // @Override
-    // public boolean visit(StoneWall tile) {
-    //     // TODO Auto-generated method stub
-    //     return false;
-    // }
-
-    // @Override
-    // public boolean visit(IceWall tile) {
-    //     // TODO Auto-generated method stub
-    //     return false;
-    // }
-
-    // @Override
-    // public boolean visit(Jewel tile) {
-    //     // TODO Auto-generated method stub
-    //     return false;
-    // }
-
-    // // @Override
-    // // public boolean visit(Turtle tile) {
-    // //     // TODO Auto-generated method stub
-    // //     return false;
-    // // }
-
     @Override
-    public boolean accept(Movable visitor) {
-        return visitor.visit(this);
+    public void executeTurn() {
+        if (moves != null)
+            for (Move move : moves)
+                move.execute(this);
     }
-
-    // @Override
-    // public boolean accept(Turtle player) {
-    //     // TODO Auto-generated method stub
-    //     return false;
-    // }
-
 }
+    
+    

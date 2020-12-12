@@ -1,23 +1,37 @@
 package model;
 
-public class Portal extends Tile {
+public class Portal implements Tile, Teleport {
     private Portal exit;
+    private Coordinate coordinate;
 
     private Portal (Coordinate c, Portal exit){
-        super(c);
+        this.coordinate = c;
         this.exit = exit;
     }
 
-    public Portal (Coordinate mine, Coordinate exit){
-        super(mine);
-        this.exit = new Portal(exit, this);
+    public Portal (Coordinate mine, Coordinate exitCoordinate){
+        this.coordinate = mine;
+        this.exit = new Portal(exitCoordinate, this);
     }
 
     public Portal getExitPortal(){
         return exit;
     }
-
-    public boolean accept (Movable visitor){
-        return visitor.visit(this);
+    
+    @Override
+    public Coordinate getCoordinate() {
+        return coordinate;
     }
+    
+    @Override
+    public boolean accept (Movable visitor){
+        return (visitor == null)? true : visitor.visit(this);
+    }
+
+    @Override
+    public Coordinate getExiCoordinate() {
+        return (exit == null)? null: exit.getCoordinate();
+    }
+
+    
 }

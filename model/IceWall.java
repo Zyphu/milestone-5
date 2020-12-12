@@ -1,21 +1,30 @@
 package model;
 
-public class IceWall extends Tile implements Meltable{
+public class IceWall implements Tile, Meltable{
+    private Coordinate coordinate;
     private boolean frozen = true;
 
     public IceWall (Coordinate coordinate){
-        super(coordinate);
+        this.coordinate = coordinate;
     }
     
-    public boolean accept (Movable visitor){
-        return visitor.visit(this);
+    @Override
+    public Coordinate getCoordinate() {
+        return coordinate;
     }
 
+    @Override
+    public boolean accept (Movable visitor){
+        return (visitor == null)? true : visitor.visit(this);
+    }
+
+    @Override
     public boolean melted (){
         return !frozen;
     }
 
+    @Override
     public void melt (){ 
         frozen = false;
-    }
+    }    
 }

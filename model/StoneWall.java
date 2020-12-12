@@ -1,11 +1,19 @@
 package model;
 
-public class StoneWall extends Tile{
+public class StoneWall implements Tile{
+    private Coordinate coordinate;
+
     public StoneWall(Coordinate coordinate){
-        super(coordinate);
+        this.coordinate = coordinate;
     }
     
+    @Override
+    public Coordinate getCoordinate(){
+        return coordinate;
+    }
+
+    @Override
     public boolean accept (Movable visitor){
-        return visitor.visit(this);
+        return (visitor == null)? true : visitor.visit(this);
     }
 }
