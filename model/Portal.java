@@ -3,6 +3,7 @@ package model;
 public class Portal implements Tile, Teleport {
     private Portal exit;
     private Coordinate coordinate;
+    private boolean inUse = false;
 
     private Portal (Coordinate c, Portal exit){
         this.coordinate = c;
@@ -33,5 +34,17 @@ public class Portal implements Tile, Teleport {
         return (exit == null)? null: exit.getCoordinate();
     }
 
-    
+    @Override
+    public boolean occupied (){
+        return inUse;
+    }
+
+    public void use (){
+        inUse = true;
+    }
+
+    public void leave(){
+        inUse = false;
+    }
+
 }

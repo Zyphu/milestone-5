@@ -2,7 +2,7 @@ package model;
 
 // TODO - run checks
 public abstract class Movable implements Tile {
-    private Coordinate curr;
+    private Coordinate curr, next;
     private Board board;
 
     public Movable (Board board, Coordinate coordinate){
@@ -19,31 +19,39 @@ public abstract class Movable implements Tile {
         this.curr = coordinate;
     }
 
-    public boolean forward (Direction dir){
+    public Board getBoard (){
+        return board;
+    }
+
+    public boolean forward (Direction dir){ 
         if (dir == null) return false;
-        Coordinate next = null;
-        if      (dir == Direction.NORTH)  next = new Coordinate(curr.x(),   curr.y()-1);
-        else if (dir == Direction.SOUTH)  next = new Coordinate(curr.x(),   curr.y()+1);
-        else if (dir == Direction.WEST )  next = new Coordinate(curr.x()-1, curr.y()  );
-        else if (dir == Direction.EAST )  next = new Coordinate(curr.x()+1, curr.y()  );
+        next = this.curr.toward(dir);
         if (next != null && board.inBounds(next)){
-            Tile boardTile = board.getTileAt(next);
-            if (boardTile == null || boardTile.accept(this)){
-                this.curr = (boardTile instanceof Portal)? new Coordinate(((Portal) boardTile).getExiCoordinate()) : next;
+            Tile nextBoardTile = board.getTileAt(next);
+            if (nextBoardTile == null || nextBoardTile.accept(this)){
+                curr = next;
                 return true;
             }
         }
         return false;
     }
 
+    public boolean visit (Portal tile){
+        if (tile == null) return true;
+        if (this instanceof Teleportable) {
+            Tile atExit = board.getTileAt(tile.getExiCoordinate());
+            if (atExit != null && !(atExit instanceof Teleportable)){
+                next = tile.getExiCoordinate();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // TODO might need to use getClass instead check
     public boolean visit (Crate tile){
         if (tile == null) return true;
-        if ((curr.y() - tile.getCoordinate().y()) == -1) return tile.forward(Direction.SOUTH);
-        if ((curr.y() - tile.getCoordinate().y()) ==  1) return tile.forward(Direction.NORTH);
-        if ((curr.x() - tile.getCoordinate().x()) == -1) return tile.forward(Direction.EAST);
-        if ((curr.x() - tile.getCoordinate().x()) ==  1) return tile.forward(Direction.WEST);
-        
-        return true;
+        return (this instanceof Pusher)? tile.forward(((Pusher) this).getDir()) : false;
     }
 
     public boolean visit (Jewel tile){
@@ -54,10 +62,6 @@ public abstract class Movable implements Tile {
     public boolean visit (IceWall tile){
         if(tile == null) return true;
         return tile.melted();
-    }
-
-    public boolean visit (Portal tile){
-        return true;
     }
 
     public boolean visit (StoneWall tile){

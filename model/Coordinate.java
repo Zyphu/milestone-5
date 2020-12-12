@@ -8,13 +8,23 @@ public class Coordinate {
         this.yPos = y;
     }
 
-    public Coordinate (Coordinate c){
-        this.xPos = c.xPos;
-        this.yPos = c.yPos;
-    }
+    // public Coordinate (Coordinate c){
+    //     this.xPos = c.xPos;
+    //     this.yPos = c.yPos;
+    // }
 
     public int x () {return xPos;}
     public int y () {return yPos;}
+
+    public Coordinate toward (Direction dir){
+        switch(dir){
+            case NORTH: return new Coordinate(xPos, yPos-1); 
+            case SOUTH: return new Coordinate(xPos , yPos+1);
+            case WEST:  return new Coordinate(xPos-1, yPos );
+            case EAST:  return new Coordinate(xPos+1, yPos );
+        }
+        return null;
+    }
 
     @Override
     public boolean equals(Object other){

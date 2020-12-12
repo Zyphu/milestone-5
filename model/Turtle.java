@@ -1,13 +1,16 @@
 package model;
 
-public class Turtle extends Movable implements Player, Orientable, Coloured {
+import java.util.ArrayDeque;
+
+public class Turtle extends Movable implements Player, Orientable, Coloured, Teleportable, Pusher {
     
     private Direction direction;
     private Colour colour;
-    private Move[] moves = null;
+    private ArrayDeque<Move> moves;
 
     public Turtle(Board board, Coordinate coordinate, Direction direction, Colour colour) {
         super(board, coordinate);
+        moves = null;
     }
 
     @Override
@@ -31,15 +34,16 @@ public class Turtle extends Movable implements Player, Orientable, Coloured {
     }
 
     @Override
-    public void setTurn(Move[] moves) {
+    public void setTurn(ArrayDeque<Move> moves) {
         this.moves = moves;
     }
 
     @Override
     public void executeTurn() {
         if (moves != null)
-            for (Move move : moves)
-                move.execute(this);
+            while(!moves.isEmpty()){
+                moves.remove().execute(this);
+            }
     }
 }
     
