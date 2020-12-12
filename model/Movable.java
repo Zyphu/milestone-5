@@ -56,7 +56,13 @@ public abstract class Movable implements Tile {
 
     public boolean visit (Jewel tile){
         if (tile == null) return true;
-        return this instanceof Turtle;
+        if (this instanceof Turtle){
+            ((Turtle)this).won();
+            board.remove(tile);
+            board.remove(this);
+            return true;
+        }
+        return false;
     }
 
     public boolean visit (IceWall tile){

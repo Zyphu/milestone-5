@@ -5,12 +5,13 @@ import java.util.Scanner;
 
 import model.AdvancedDeck;
 import model.AdvancedGameModel;
+import model.GameModel;
 import view.GameView;
 
 public class AdvancedGameController implements GameController {
     private Scanner input;
     private GameView view;
-    private AdvancedGameModel model;
+    private GameModel model;
 
     public AdvancedGameController(GameView view){
         input = new Scanner (System.in);
@@ -32,7 +33,7 @@ public class AdvancedGameController implements GameController {
     public void playGame (){
         initGame();
         while (!model.gameOver())
-            playTurn();
+            generateTurn();
         view.gameOver();
         input.nextLine();
     }
@@ -50,7 +51,7 @@ public class AdvancedGameController implements GameController {
         }
     }
 
-    private void playTurn () {
+    private void generateTurn () {
         ArrayDeque<Integer> editing, program, frog;
         boolean buildingFrog = false;
         AdvancedDeck deck = new AdvancedDeck();
@@ -80,9 +81,11 @@ public class AdvancedGameController implements GameController {
                     editing = (!buildingFrog)? program : frog;
                 } 
                 else if (choice == deck.numOfTypes()+3 && !program.isEmpty()){ // END TURN
-                    model.turn(deck.getCards(convertToIndex(program)), deck.getCards(convertToIndex(frog)));
+                    model.playTurn(deck.getCards(convertToIndex(program)), deck.getCards(convertToIndex(frog)));
                     return;
                 }
+                else if (choice == deck.numOfTypes()+4) // EXIT
+                    System.exit(0);
             } catch (NumberFormatException e) { }   
         }
     }

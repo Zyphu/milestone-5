@@ -7,7 +7,7 @@ public class Right implements Move {
             case NORTH: player.setDir(Direction.EAST);  return;
             case SOUTH: player.setDir(Direction.WEST);  return;
             case EAST:  player.setDir(Direction.SOUTH); return;
-            case WEST:  player.setDir(Direction.WEST);  return;
+            case WEST:  player.setDir(Direction.NORTH);  return;
         }
     }
 }

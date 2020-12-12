@@ -48,8 +48,9 @@ public class AdvancedGameView implements GameView {
         sb.append(String.format("%d) BUG\n", deck.length+1));
         sb.append("-------------------\n");
         sb.append(String.format("%d) CHANGE SELECTION\n", deck.length+2));
-        sb.append(String.format("%d) END TURN\n\n", deck.length+3));
-        sb.append(String.format("Enter choice (1-%d): ", deck.length+3));
+        sb.append(String.format("%d) END TURN\n", deck.length+3));
+        sb.append(String.format("%d) EXIT GAME\n\n", deck.length+4));
+        sb.append(String.format("Enter choice (1-%d): ", deck.length+4));
         System.out.print(sb.toString());
     }
 }

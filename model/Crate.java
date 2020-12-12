@@ -10,5 +10,11 @@ public class Crate extends Movable{
     public boolean accept(Movable visitor) {
         return (visitor == null)? true : visitor.visit(this);
     }
+
+    @Override
+    public char textIcon() {
+        return 'C';
+    }
+
     
 }

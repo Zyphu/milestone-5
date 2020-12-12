@@ -16,4 +16,9 @@ public class StoneWall implements Tile{
     public boolean accept (Movable visitor){
         return (visitor == null)? true : visitor.visit(this);
     }
+
+    @Override
+    public char textIcon() {
+        return 'W';
+    }
 }

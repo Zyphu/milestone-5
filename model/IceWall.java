@@ -26,5 +26,10 @@ public class IceWall implements Tile, Meltable{
     @Override
     public void melt (){ 
         frozen = false;
-    }    
+    }
+        
+    @Override
+    public char textIcon() {
+        return (frozen)? 'I' : 'i';
+    }
 }

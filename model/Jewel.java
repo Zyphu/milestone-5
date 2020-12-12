@@ -23,4 +23,9 @@ public class Jewel implements Tile, Coloured {
     public Colour getColour() {
         return colour;
     }
+
+    @Override
+    public char textIcon() {
+        return 'J';
+    }
 }
